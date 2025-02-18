@@ -116,7 +116,19 @@ public:
         }
         cout << "NULL\n";
     }
-
+    
+    Node* search(char data) {
+        Node* tempNode = this->head;
+        if (this->currentSize > 0) {
+            while (tempNode->next != NULL) {
+                if (tempNode->data == data) {
+                    return tempNode;
+                }
+                tempNode = tempNode->next;
+            }
+        }
+        return NULL;
+    }
 
     // Destructor to free memory
     ~PriorityQueue() {
