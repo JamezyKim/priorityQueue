@@ -117,6 +117,7 @@ public:
         cout << "NULL\n";
     }
     
+    //얘가 하는게 Node들을 돌면서 data랑 같은 Node를 return하는거
     Node* search(char data) {
         Node* tempNode = this->head;
         if (this->currentSize > 0) {
@@ -130,6 +131,29 @@ public:
         return NULL;
     }
 
+    void update(char data, int priority) {
+        if (this->head == NULL) {
+            cout << "Empty" << endl;
+            return;
+        }
+        Node* tempNode = this->head;
+        Node* nextNode = this->head;
+        Node* updataVal = NULL;
+        if (search(data) == this->head) {
+            updataVal = search(data);
+            updataVal->priority = priority;
+            while (tempNode->next->priority != priority+1) {
+                tempNode = tempNode->next;
+            }
+            nextNode = tempNode->next;
+            tempNode->next = updataVal;
+            updataVal->next = nextNode;
+            this->head = this->head->next;
+        }
+
+
+    }
+
     // Destructor to free memory
     ~PriorityQueue() {
         while (head) {
@@ -140,19 +164,97 @@ public:
     }
 };
 
+void charDataMinPriUpdateDisplay() {
+    //arrange
+    PriorityQueue pq;
+    pq.insert('a', 1);
+    pq.insert('b', 2);
+    pq.insert('c', 3);
+    pq.insert('d', 4);
+    pq.insert('e', 5);
 
+    //act
+    pq.update('a', 6);
+
+    //assert
+    cout << "expectedResult: " << "b->c->d->e->a" << endl;
+    cout << "actualResult: ";
+    pq.printQueue();
+
+    return;
+}
+
+void charDataMaxPriUpdateDisplay() {
+    //arrange
+    PriorityQueue pq;
+    pq.insert('a', 1);
+    pq.insert('b', 2);
+    pq.insert('c', 3);
+    pq.insert('d', 4);
+    pq.insert('e', 5);
+
+    //act
+    pq.update('c', 1);
+
+    //assert
+    cout << "expectedResult: " << "a->c->b->d->e" << endl;
+    cout << "actualResult: ";
+    pq.printQueue();
+
+    return;
+}
+
+void charDataMidPriUpdateDisplay() {
+    //arrange
+    PriorityQueue pq;
+    pq.insert('a', 1);
+    pq.insert('b', 2);
+    pq.insert('c', 3);
+    pq.insert('d', 4);
+    pq.insert('e', 5);
+
+    //act
+    cout << "expectedResult: " << "b->c->a->d->e" << endl;
+    cout << "actualResult: ";
+    pq.update('a', 3);
+
+    //assert
+    pq.printQueue();
+
+    return;
+}
+
+void charDataMidPriUpdateDisplay() {
+    //arrange
+    PriorityQueue pq;
+    pq.insert('a', 1);
+    pq.insert('b', 2);
+    pq.insert('c', 3);
+    pq.insert('d', 4);
+    pq.insert('e', 5);
+
+    //act
+    pq.update('e', 3);
+
+    //assert
+    cout << "expectedResult: " << "a->b->->c->e->d" << endl;
+    cout << "actualResult: ";
+    pq.printQueue();
+
+    return;
+}
 
 int main() {
     PriorityQueue pq;
 
-    pq.insert('d', 4);
-    pq.insert('d', 1);
-    pq.insert('d', 3);
+    pq.insert('c', 4);
+    pq.insert('a', 1);
+    pq.insert('b', 3);
     pq.insert('d', 8);
-    pq.insert('d', 9);
+    pq.insert('e', 9);
 
     cout << "test ";
-    pq.printQueue();
+    pq.update('a', 3);
 
     //std::cout << "Priority Queue (Linked List): ";
     //pq.printQueue();
