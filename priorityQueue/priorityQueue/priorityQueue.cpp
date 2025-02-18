@@ -83,6 +83,16 @@ public:
         return minValue;
     }
 
+    void clear() {
+        if (empty()) {
+            return;
+        }
+        Node* tempNode = this->head;
+        while (this->currentSize > 0) {
+            pop();
+        }
+    }
+
     // Get the highest priority element without removing (O(1))
     char top() {
         if (!head) {
