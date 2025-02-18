@@ -1,10 +1,6 @@
 #include <iostream>
 using namespace std;
 
-
-#include <iostream>
-using namespace std;
-
 class Node {
 public:
     char data;
@@ -52,7 +48,26 @@ public:
         temp->next = newNode;
         this->currentSize++;
     }
+    
+    char extract_min() {
+        if (!head) {
+            cout << "Empty " << endl;
+            return ' ';
+        }
 
+        Node* currentNode = this->head;
+        Node* nextNode = this->head;
+        while (nextNode->next != NULL) {
+            currentNode = nextNode;
+            nextNode = nextNode->next;
+        }
+        currentNode->next = NULL;
+
+        char result = nextNode->data;
+        delete nextNode;
+        this->currentSize--;
+        return result;
+    }
     
     // Remove and return the highest priority element (O(1))
     char pop() {
