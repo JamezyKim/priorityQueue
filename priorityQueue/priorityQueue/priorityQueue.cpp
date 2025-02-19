@@ -117,7 +117,6 @@ public:
         cout << "NULL\n";
     }
     
-    //얘가 하는게 Node들을 돌면서 data랑 같은 Node를 return하는거
     Node* search(char data) {
         Node* tempNode = this->head;
         if (this->currentSize > 0) {
@@ -133,27 +132,42 @@ public:
 
     void update(char data, int priority) {
         if (this->head == NULL) {
-            cout << "Empty" << endl;
             return;
         }
-        Node* tempNode = this->head;
-        Node* nextNode = this->head;
-        Node* updataVal = NULL;
-        if (search(data) == this->head) {
-            updataVal = search(data);
-            updataVal->priority = priority;
-            while (tempNode->next->priority != priority+1) {
-                tempNode = tempNode->next;
-            }
-            nextNode = tempNode->next;
-            tempNode->next = updataVal;
-            updataVal->next = nextNode;
+        Node* targetNode = search(data);
+
+        Node* nextNode = NULL;
+        Node* prevNode = NULL;
+        if (targetNode == NULL) {
+            return;
+        }
+        if (targetNode == this->head) {
             this->head = this->head->next;
         }
-
-
+        else {
+            prevNode = this->head;
+            while (prevNode != NULL && prevNode->next != targetNode) {
+                prevNode = prevNode->next;
+            }
+            if (prevNode->next == targetNode) {
+                prevNode->next = targetNode->next;
+            }
+        }
+        targetNode->priority = priority;
+        nextNode = this->head;
+        while (nextNode != NULL && nextNode->priority <= priority) {
+            prevNode = nextNode;
+            nextNode = nextNode->next;
+        }
+        if (prevNode == NULL) {
+            targetNode->next = this->head;
+            this->head = targetNode;
+        }
+        else {
+            prevNode->next = targetNode;
+            targetNode->next = nextNode;
+        }
     }
-
     // Destructor to free memory
     ~PriorityQueue() {
         while (head) {
@@ -177,7 +191,7 @@ void charDataMinPriUpdateDisplay() {
     pq.update('a', 6);
 
     //assert
-    cout << "expectedResult: " << "b->c->d->e->a" << endl;
+    cout << "expectedResult: " << "b -> c -> d -> e -> a" << endl;
     cout << "actualResult: ";
     pq.printQueue();
 
@@ -197,7 +211,7 @@ void charDataMaxPriUpdateDisplay() {
     pq.update('c', 1);
 
     //assert
-    cout << "expectedResult: " << "a->c->b->d->e" << endl;
+    cout << "expectedResult: " << "a -> c -> b -> d -> e" << endl;
     cout << "actualResult: ";
     pq.printQueue();
 
@@ -214,7 +228,7 @@ void charDataMidPriUpdateDisplay() {
     pq.insert('e', 5);
 
     //act
-    cout << "expectedResult: " << "b->c->a->d->e" << endl;
+    cout << "expectedResult: " << "b -> c -> a -> d -> e" << endl;
     cout << "actualResult: ";
     pq.update('a', 3);
 
@@ -224,7 +238,7 @@ void charDataMidPriUpdateDisplay() {
     return;
 }
 
-void charDataMidPriUpdateDisplay() {
+void charDataEndMidPriUpdateDisplay() {
     //arrange
     PriorityQueue pq;
     pq.insert('a', 1);
@@ -237,7 +251,7 @@ void charDataMidPriUpdateDisplay() {
     pq.update('e', 3);
 
     //assert
-    cout << "expectedResult: " << "a->b->->c->e->d" << endl;
+    cout << "expectedResult: " << "a -> b -> c -> e -> d" << endl;
     cout << "actualResult: ";
     pq.printQueue();
 
@@ -256,16 +270,12 @@ int main() {
     cout << "test ";
     pq.update('a', 3);
 
-    //std::cout << "Priority Queue (Linked List): ";
+    charDataMinPriUpdateDisplay();
+    charDataMaxPriUpdateDisplay();
+    charDataMidPriUpdateDisplay();
+    charDataEndMidPriUpdateDisplay();
+
     //pq.printQueue();
-
-    //std::cout << "Top element: " << pq.top() << std::endl;
-
-    //std::cout << "Removing elements in priority order: ";
-    //while (!pq.empty()) {
-    //    std::cout << pq.pop() << " ";
-    //}
-    //std::cout << std::endl;
 
     return 0;
 }
