@@ -120,7 +120,7 @@ public:
     Node* search(char data) {
         Node* tempNode = this->head;
         if (this->currentSize > 0) {
-            while (tempNode->next != NULL) {
+            while (tempNode != NULL) {
                 if (tempNode->data == data) {
                     return tempNode;
                 }
@@ -135,7 +135,6 @@ public:
             return;
         }
         Node* targetNode = search(data);
-
         Node* nextNode = NULL;
         Node* prevNode = NULL;
         if (targetNode == NULL) {
@@ -260,15 +259,6 @@ void charDataEndMidPriUpdateDisplay() {
 
 int main() {
     PriorityQueue pq;
-
-    pq.insert('c', 4);
-    pq.insert('a', 1);
-    pq.insert('b', 3);
-    pq.insert('d', 8);
-    pq.insert('e', 9);
-
-    cout << "test ";
-    pq.update('a', 3);
 
     charDataMinPriUpdateDisplay();
     charDataMaxPriUpdateDisplay();
